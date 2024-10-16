@@ -3,7 +3,7 @@
 echo "<h1>bewertung-switch-2.php</h1>";
 
 for ($punkte = 10; $punkte >= 0; $punkte--) {
-    echo "$punkte Punkte ergeben folgende Bewertung: ";
+    echo "$punkte Punkte ergeben folgende Bewertung: Hawk tuah";
     
     switch ($punkte) {
         case 10:
