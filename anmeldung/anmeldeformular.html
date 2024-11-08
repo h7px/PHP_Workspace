@@ -51,6 +51,78 @@
             max-width: 950px; /* Set max-width to make the form box smaller */
         }
 
+     /* Define the smooth color transition using hue-rotation */
+     @keyframes colorShift {
+            0% { background: hsl(0, 100%, 60%); } /* Red */
+            25% { background: hsl(90, 100%, 60%); } /* Green */
+            50% { background: hsl(180, 100%, 60%); } /* Cyan */
+            75% { background: hsl(270, 100%, 60%); } /* Blue */
+            100% { background: hsl(360, 100%, 60%); } /* Red (cycle back) */
+        }
+
+        /* Apply the smooth color shift animation to the slider */
+        .animated-slider {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 8px;
+            border-radius: 5px;
+            outline: none;
+            background-size: 200% 100%;
+            animation: colorShift 6s infinite ease-in-out; /* Extended time for a smooth transition */
+        }
+
+        /* Slider thumb styling */
+        .animated-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background-color: #333;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .animated-slider::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            background-color: #333;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        /* Label Styling for Genderfluid and Divers */
+        .slider-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            color: #333;
+        }
+
+        .slider-labels .label {
+            position: absolute;
+            top: 25px;
+        }
+
+        .slider-labels .genderfluid {
+            left: 35%;
+        }
+
+        .slider-labels .divers {
+            left: 60%;
+        }
+
+        /* Gender display box styling */
+        .gender-display-box {
+            margin-top: 10px;
+            padding: 5px;
+            width: 100%;
+            text-align: center;
+            font-size: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f8f9fa;
+        }
+
     </style>
 </head>
 <body class="bg-light">
@@ -99,6 +171,17 @@
                 <label for="name">*Vor- und Nachname (Schüler/-in)</label>
                 <input type="text" class="form-control" id="name" name="name" required>
             </div>
+    <div class="form-group">
+        <label for="geschlecht">*Geschlecht</label>
+        <div class="d-flex align-items-center">
+            <strong>Männlich</strong>
+            <input type="range" class="form-control mx-3 animated-slider" id="geschlecht" name="geschlecht" value="0" required>
+            <strong>Weiblich</strong>
+        </div>
+            <!-- Gender display box below the slider -->
+            <div class="gender-display-box" id="genderDisplayBox"></div>
+        <input type="hidden" id="geschlechtValue" name="geschlechtValue" value="Männlich"> <!-- Hidden input for gender -->
+            </div>            
             <div class="form-group">
                 <label for="gbdatum">*Geburtsdatum</label>
                 <input type="date" class="form-control" id="gbdatum" name="gbdatum" required>
@@ -158,7 +241,7 @@
             </div>
         </form>
     </div>
-
+    
     <!-- Bootstrap JS and dependencies -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
@@ -174,6 +257,37 @@
                 header.classList.remove('visible');
             }
         });
+
+        // Get the slider and the gender display box
+        const slider = document.getElementById('geschlecht');
+        const genderDisplayBox = document.getElementById('genderDisplayBox');
+        const hiddenGenderInput = document.getElementById('geschlechtValue');
+
+        // Function to update the gender based on the slider value
+        function updateGender() {
+            let value = slider.value;
+
+            // Determine the gender based on the slider value
+            if (value >= 0 && value <= 20) {
+                hiddenGenderInput.value = "Männlich";
+                genderDisplayBox.textContent = "Männlich";
+            } else if (value > 20 && value <= 40) {
+                hiddenGenderInput.value = "Genderfluid";
+                genderDisplayBox.textContent = "Genderfluid";
+            } else if (value > 40 && value <= 60) {
+                hiddenGenderInput.value = "Divers";
+                genderDisplayBox.textContent = "Divers";
+            } else if (value > 60 && value <= 80) {
+                hiddenGenderInput.value = "Genderfluid";
+                genderDisplayBox.textContent = "Genderfluid";
+            } else if (value > 80 && value <= 100) {
+                hiddenGenderInput.value = "Weiblich";
+                genderDisplayBox.textContent = "Weiblich";
+            }
+        }
+
+        // Listen for input on the slider
+        slider.addEventListener('input', updateGender);
     </script>
 </body>
 </html>
