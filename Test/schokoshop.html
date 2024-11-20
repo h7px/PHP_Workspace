@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Schokoshop</title>
+</head>
+<body>
+    <h1>Schokoshop</h1>
+    <h2>Heute auswählen und morgen in der Wunsch-Filiale abholen!</h2>
+
+    <form action="schokoshop.php" method="GET">
+        <div class="radio-group">
+            <label for="radio-group">Bitte wählen Sie aus unserem Angebot.</label><br><br>
+                <input id="pralinen" type="radio" name="pralinenmix" value="5er Pralinenmix" required checked>5er Pralinenmix<br>
+                <input id="pralinen" type="radio" name="pralinenmix" value="8er Pralinenmix" required>8er Pralinenmix<br>
+                <input id="pralinen" type="radio" name="pralinenmix" value="12er Pralinenmix" required>12er Pralinenmix<br>
+                <input id="pralinen" type="radio" name="pralinenmix" value="25er Pralinenmix" required>25er Pralinenmix<br>
+        </div>
+<br>
+        <div class="filiale">
+            <label for="filiale">Wählen Sie hier die Wunschfiliale aus: </label>
+                <select name="filiale" id="filiale" required>
+                    <option value="Spittal" selected>Spittal</option>
+                    <option value="Villach">Villach</option>
+                    <option value="Klagenfurt">Klagenfurt</option>
+                </select>
+        </div>
+<br>
+        <div class="zeit">
+            <label for="zeit">Zeitpunkt der Abholung: </label>
+            <input id="zeit" type="time" name="zeit"><br>
+        </div>
+<br>
+        <div class="nachname">
+            <label>Die Pralinen werden hinterlegt für: </label><br>
+            <label for="nachname">Nachname: </label>
+            <input id="nachname" type="text" name="nachname"><br>
+        </div>
+<br>
+        <div class="submit">
+            <input type="submit" value="Vorbestellen" name="submit">
+        </div>
+
+    </form>
+</body>
+</html>
