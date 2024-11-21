@@ -1,71 +1,44 @@
 <?php
-// Database connection parameters
-$host = '127.0.0.1'; // Update with your database host
-$dbname = 'vermisst'; // Update with your database name
-$user = 'root'; // Update with your database username
-$password = ''; // Update with your database password
+if (isset($_GET['submit'])) {
+    // Check if all required fields are filled
+    if (!empty($_GET['vname']) && !empty($_GET['nname']) && !empty($_GET['email']) && !empty($_GET['wanngesehen']) && !empty($_GET['wogesehen']) && !empty($_GET['angaben'])) {
+    
+        $vorname = htmlspecialchars($_GET['vorname']);
+        require_once("dbconnection.php");
 
-// Check if the form has been submitted
-if ($_SERVER["REQUEST_METHOD"] == "GET") {
-    // Get and sanitize form inputs
-    $vorname = !empty($_GET['vname']) ? htmlspecialchars($_GET['vname']) : NULL;
-    $nachname = !empty($_GET['nname']) ? htmlspecialchars($_GET['nname']) : NULL;
-    $email = !empty($_GET['email']) ? htmlspecialchars($_GET['email']) : NULL;
-    $wanngesehen = !empty($_GET['wanngesehen']) ? htmlspecialchars($_GET['wanngesehen']) : NULL;
-    $wogesehen = !empty($_GET['wogesehen']) ? htmlspecialchars($_GET['wogesehen']) : NULL;
-    $da = isset($_GET['minka']) && $_GET['minka'] == 'Ja' ? 1 : 0;
-    $angaben = !empty($_GET['angaben']) ? htmlspecialchars($_GET['angaben']) : NULL;
+        try {
+            // Prepare SQL statement
+            $stmt = $pdo->prepare("
+                INSERT INTO sichtungen (vorname, nachname, email, wanngesehen, wogesehen, da, angaben) 
+                VALUES (:vorname, :nachname, :email, :wanngesehen, :wogesehen, :da, :angaben)
+            ");
 
-    // Insert data into the database
-    try {
-        // Establish database connection
-        $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $user, $password);
-        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $stmt->bindParam(":vorname",$vorname);
 
-        // Prepare SQL statement
-        $stmt = $pdo->prepare("INSERT INTO sichtungen (vorname, nachname, email, wanngesehen, wogesehen, da, angaben) 
-                               VALUES (:vorname, :nachname, :email, :wanngesehen, :wogesehen, :da, :angaben)");
+             // Bind and execute the statement
+            $stmt->execute([
+                ':vorname' => $_GET['vname'],
+                ':nachname' => $_GET['nname'],
+                ':email' => $_GET['email'],
+                ':wanngesehen' => $_GET['wanngesehen'],
+                ':wogesehen' => $_GET['wogesehen'],
+                ':da' => isset($_GET['minka']) && $_GET['minka'] === 'Ja' ? 1 : 0, // Convert radio button value to 1/0
+                ':angaben' => $_GET['angaben']
+            ]);
 
-        // Bind parameters
-        $stmt->bindParam(':vorname', $vorname);
-        $stmt->bindParam(':nachname', $nachname);
-        $stmt->bindParam(':email', $email);
-        $stmt->bindParam(':wanngesehen', $wanngesehen);
-        $stmt->bindParam(':wogesehen', $wogesehen);
-        $stmt->bindParam(':da', $da, PDO::PARAM_BOOL);
-        $stmt->bindParam(':angaben', $angaben);
-
-        // Execute the statement
-        $stmt->execute();
-
-        // Confirmation message
-        echo "<!DOCTYPE html>
-        <html lang='de'>
-        <head>
-            <meta charset='UTF-8'>
-            <meta name='viewport' content='width=device-width, initial-scale=1.0'>
-            <title>Bestätigung der Sichtung</title>
-            <link href='https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css' rel='stylesheet'>
-        </head>
-        <body class='bg-light'>
-            <div class='container mt-5'>
-                <h1 class='text-center mb-5'>Bestätigung der Sichtung</h1>
-                <div class='bg-white p-4 rounded shadow-sm'>
-                    <h2>Vielen Dank!</h2>
-                    <p>Ihre Meldung wurde erfolgreich übermittelt.</p>
-                    <div class='text-center mt-4'>
-                        <a href='" . htmlspecialchars($_SERVER['PHP_SELF']) . "' class='btn btn-primary'>Zurück zum Formular</a>
-                    </div>
-                </div>
-            </div>
-        </body>
-        </html>";
-    } catch (PDOException $e) {
-        echo "Fehler: Ungültige Daten eingegeben! " . $e->getMessage();
+            // Success message
+            echo "<div class='alert alert-success text-center'>Vielen Dank! Ihre Meldung wurde erfolgreich gespeichert.</div>";
+        } catch (PDOException $e) {
+            // Error message
+            echo "<div class='alert alert-danger text-center'>Fehler bei der Speicherung: " . $e->getMessage() . "</div>";
+        }
+    } else {
+        // Display error if form validation fails
+        echo "<div class='alert alert-warning text-center'>Bitte füllen Sie das Formular richtig aus.</div>";
     }
-} else {
-    // Display the form if it's not a GET request
+}
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -141,14 +114,10 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     </div>
 
     <div class="text-center">
-        <button type="submit" class="btn btn-primary">Sichtung melden</button>
+        <button type="submit" class="btn btn-primary" name="submit">Sichtung melden</button>
     </div>
 </form>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
-
-<?php
-}
-?>

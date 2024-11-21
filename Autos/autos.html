@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Im Rauch der Geschwindigkeit</title>
+</head>
+<body>
+    <h1>Im Rauch der Geschwindigkeit</h1>
+    <!DOCTYPE html>
+    <form action="autos.php" method="GET">
+       <h2>Probefahrt vereinbaren!</h2>
+        <div class="radio-group">
+            <label for="radio-group">Bitte wählen Sie</label><br><br>
+                <input id="auto" type="radio" name="auto" value="Bugatti Chiro" required checked>Bugatti Chiro<br>
+                <input id="auto" type="radio" name="auto" value="Koenigsegg Agera" required>Koenigsegg Agera<br>
+         </div>
+
+         <div class="filiale">
+            <label for="filiale">Wählen Sie hier den Standort aus </label>
+                <select name="filiale" id="filiale" required>
+                    <option value="Wien" selected>Wien</option>
+                    <option value="Graz">Graz</option>
+                    <option value="Innsbruck">Innsbruck</option>
+                </select>
+        </div>
+        
+        <div class="date">
+            <label for="date">Bitte geben Sie uns Ihren Wunschtermin bekannt: </label>
+            <input id="date" type="date" name="date" required><br>
+        </div>
+
+        <div calss="alter">
+            <label for="alter">Bitte gebne Sie hier Ihr Alter ein:</label>
+            <input id="alter" type="number" name="alter" required><br>
+        </div>
+
+        <div class="submit">
+            <input type="submit" value="Termin fixieren" name="submit">
+        </div>
+
+       
+</body>
+</html>
