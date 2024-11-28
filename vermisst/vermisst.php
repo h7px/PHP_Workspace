@@ -7,6 +7,10 @@ if (isset($_GET['submit'])) {
         require_once("dbconnection.php");
 
         try {
+
+            $sql = "SELECT * FROM meldungen";
+            $stmt;
+
             // Prepare SQL statement
             $stmt = $pdo->prepare("
                 INSERT INTO sichtungen (vorname, nachname, email, wanngesehen, wogesehen, da, angaben) 
