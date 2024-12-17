@@ -11,60 +11,49 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $benutzername = trim($_POST["benutzername"]);
     $punkte = trim($_POST["punkte"]);
 
-    // Auslesen der Daten der übertragenen Datei
-    // {"screenshot", "zweiteDatei", "dritteDatei"}
-    // |-> "name": "screenshot"
-    // |-> "size": "32000"
-    // |-> "type": "jpeg"
-    // |-> "tmp_name": "di2n4kdnd3.jpg"
     $screenshot_name = trim($_FILES["screenshot"]["name"]);
     $screenshot_type = $_FILES["screenshot"]["type"];
     $screenshot_size = $_FILES["screenshot"]["size"];
     $screenshot_tmp_name = $_FILES["screenshot"]["tmp_name"];
 
-    // Überprüfen, ob der Typ der Datei und die Größe der Datei in Ordnung sind.
     if (($screenshot_type == "image/jpeg" || 
         $screenshot_type == "image/png" ||
         $screenshot_type == "image/gif") && 
         $screenshot_size > 0 && 
-        $screenshot_size <= 32000){
+        $screenshot_size <= 1000000){
         
-    // Datei ok --> Datei aus dem temporären Ordner am Server in den Zielordner auf dem Server verschieben. (dort bleibt die Datei bis der zugehörige DB-Eintrag gelöscht wird)
-    // Zielpfad festlegen
-    $ziel = "/screenshot_files/" . $screenshot_name;
-    // Verschieben der Datei
-    if(move_uploaded_file($screenshot_tmp_name, $ziel)){
-        // Datei wurde in den Zielordner am Webserver verschoben.
-        // Jetzt kann der Eintrag in die DB geschrieben werden.
+        $ziel = "screenshot_files/" . $screenshot_name;
         
-
-        if (empty($benutzername) || empty($punkte)) {
-            $meldung = "Bitte füllen Sie alle Felder aus.";
-        } elseif (!is_numeric($punkte)) {
-            $meldung = "Die Punktezahl muss eine Zahl sein."; 
-        } else {
-            try {
-                $sql = "INSERT INTO highscores (benutzername, punkte, screenshot) VALUES (:benutzername, :punkte, :screenshot)";
-                $stmt = $pdo->prepare($sql);
-                $stmt->execute([
-                    ':benutzername' => $benutzername,
-                    ':punkte' => $punkte,
-                    ':screenshot' => $screenshot_name,
-                ]);
-                $meldung = "Highscore erfolgreich gemeldet!";
-            } catch (PDOException $e) {
-                $meldung = "Fehler beim Einfügen des Highscores: " . $e->getMessage();
-            }
+        if (!file_exists("screenshot_files")) {
+            mkdir("screenshot_files", 0777, true);
         }
-    }
-
+        
+        if(move_uploaded_file($screenshot_tmp_name, $ziel)){
+            if (empty($benutzername) || empty($punkte)) {
+                $meldung = "Bitte füllen Sie alle Felder aus.";
+            } elseif (!is_numeric($punkte)) {
+                $meldung = "Die Punktezahl muss eine Zahl sein."; 
+            } else {
+                try {
+                    $sql = "INSERT INTO highscores (benutzername, punkte, screenshot) VALUES (:benutzername, :punkte, :screenshot)";
+                    $stmt = $pdo->prepare($sql);
+                    $stmt->execute([
+                        ':benutzername' => $benutzername,
+                        ':punkte' => $punkte,
+                        ':screenshot' => $screenshot_name,
+                    ]);
+                    $meldung = "Highscore erfolgreich gemeldet!";
+                } catch (PDOException $e) {
+                    $meldung = "Fehler beim Einfügen des Highscores: " . $e->getMessage();
+                }
+            }
+        } else {
+            $meldung = "Fehler beim Hochladen des Screenshots.";
+        }
     } else {
-        // Fehler beim Verschieben der Datei
+        $meldung = "Ungültiger Dateityp oder Dateigröße. Erlaubt sind JPEG, PNG oder GIF bis 1 Megabyte.";
     }
-
-    }
-
-
+}
    
 ?>
 
@@ -91,7 +80,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             </div>
                         <?php endif; ?>
                         
-                        <!-- Form-Tag ergänzen (enctype="multipart/form-data") - Wichtig: Dateien können nur mit POST übertragen werden. -->
                         <form method="post" action="<?php echo htmlspecialchars($_SERVER['SCRIPT_NAME']); ?>" class="needs-validation" enctype="multipart/form-data" novalidate>
                             <div class="mb-3">
                                 <label for="benutzername" class="form-label">Name:</label>

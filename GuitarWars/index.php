@@ -3,7 +3,7 @@
 require_once("dbconnection.php");
 
 try {
-    $sql = "SELECT benutzername, punkte, datum FROM highscores ORDER BY punkte DESC";
+    $sql = "SELECT benutzername, punkte, datum, screenshot FROM highscores ORDER BY punkte DESC";
     $stmt = $pdo->query($sql);
     $highscores = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
@@ -30,6 +30,7 @@ try {
                         <th>Punkte</th>
                         <th>Name</th>
                         <th>Datum</th>
+                        <th>Screenshot</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -39,11 +40,17 @@ try {
                                 <td><?php echo htmlspecialchars($highscore['punkte']); ?></td>
                                 <td><?php echo htmlspecialchars($highscore['benutzername']); ?></td>
                                 <td><?php echo htmlspecialchars($highscore['datum']); ?></td>
+                                <td>
+                                    <?php if (!empty($highscore['screenshot'])): ?>
+                                        <img src="screenshot_files/<?php echo htmlspecialchars($highscore['screenshot']); ?>" 
+                                             alt="Screenshot" style="max-width: 100px;">
+                                    <?php endif; ?>
+                                </td>
                             </tr>
                         <?php endforeach; ?>
                     <?php else: ?>
                         <tr>
-                            <td colspan="3" class="text-center">Keine Highscores vorhanden.</td>
+                            <td colspan="4" class="text-center">Keine Highscores vorhanden.</td>
                         </tr>
                     <?php endif; ?>
                 </tbody>
