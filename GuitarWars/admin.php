@@ -2,7 +2,7 @@
 require_once("dbconnection.php");
 
 try {
-    $sql = "SELECT id, benutzername, punkte, datum, screenshot FROM highscores ORDER BY punkte DESC";
+    $sql = "SELECT id, benutzername, punkte, datum, screenshot, bestaetigt FROM highscores WHERE bestaetigt = 0 ORDER BY punkte DESC";
     $stmt = $pdo->query($sql);
     $highscores = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
@@ -47,6 +47,12 @@ try {
                                     <?php endif; ?>
                                 </td>
                                 <td>
+                                    <?php if (!$highscore['bestaetigt']): ?>
+                                        <a href="hsbestaetigen.php?id=<?php echo $highscore['id']; ?>&datum=<?php echo urlencode($highscore['datum']); ?>&name=<?php echo urlencode($highscore['benutzername']); ?>&punkte=<?php echo urlencode($highscore['punkte']); ?>&screenshot=<?php echo urlencode($highscore['screenshot']); ?>" 
+                                           class="btn btn-success btn-sm me-2">
+                                            Bestätigen
+                                        </a>
+                                    <?php endif; ?>
                                     <a href="hsloeschen.php?id=<?php echo $highscore['id']; ?>&datum=<?php echo urlencode($highscore['datum']); ?>&name=<?php echo urlencode($highscore['benutzername']); ?>&punkte=<?php echo urlencode($highscore['punkte']); ?>&screenshot=<?php echo urlencode($highscore['screenshot']); ?>" 
                                        class="btn btn-danger btn-sm"
                                        onclick="return confirm('Möchten Sie diesen Highscore wirklich löschen?');">

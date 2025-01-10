@@ -1,6 +1,7 @@
 <?php
 
 require_once("dbconnection.php");
+require_once("appKonstanten.php");
 
 $benutzername = "";
 $punkte = "";
@@ -20,9 +21,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $screenshot_type == "image/png" ||
         $screenshot_type == "image/gif") && 
         $screenshot_size > 0 && 
-        $screenshot_size <= 1000000){
+        $screenshot_size <= MAXDATEIGROESSE){
         
-        $ziel = "screenshot_files/" . $screenshot_name;
+        $ziel = ORDNER . $screenshot_name;
         
         if (!file_exists("screenshot_files")) {
             mkdir("screenshot_files", 0777, true);
@@ -33,8 +34,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $meldung = "Bitte füllen Sie alle Felder aus.";
             } elseif (!is_numeric($punkte)) {
                 $meldung = "Die Punktezahl muss eine Zahl sein."; 
+            } elseif (strlen($benutzername) > 30) {
+                $meldung = "Der Benutzername darf maximal 30 Zeichen lang sein.";
+            } elseif ($punkte <= 0 || $punkte > 999999) {
+                $meldung = "Bitte geben Sie eine gültige Punktzahl ein (1-999999).";
             } else {
                 try {
+                   
+                    $benutzername = trim(htmlspecialchars($benutzername));
+                    $punkte = trim($punkte);
                     $sql = "INSERT INTO highscores (benutzername, punkte, screenshot) VALUES (:benutzername, :punkte, :screenshot)";
                     $stmt = $pdo->prepare($sql);
                     $stmt->execute([
@@ -44,6 +52,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     ]);
                     $meldung = "Highscore erfolgreich gemeldet!";
                 } catch (PDOException $e) {
+                     if (file_exists($ziel)) {
+                        unlink($ziel);
+                    }
                     $meldung = "Fehler beim Einfügen des Highscores: " . $e->getMessage();
                 }
             }
@@ -51,7 +62,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $meldung = "Fehler beim Hochladen des Screenshots.";
         }
     } else {
-        $meldung = "Ungültiger Dateityp oder Dateigröße. Erlaubt sind JPEG, PNG oder GIF bis 1 Megabyte.";
+        $meldung = "Ungültiger Dateityp oder Dateigröße. Erlaubt sind JPEG, PNG oder GIF bis 4 Megabyte.";
     }
 }
    

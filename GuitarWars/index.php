@@ -3,7 +3,7 @@
 require_once("dbconnection.php");
 
 try {
-    $sql = "SELECT benutzername, punkte, datum, screenshot FROM highscores ORDER BY punkte DESC";
+    $sql = "SELECT benutzername, punkte, datum, screenshot FROM highscores WHERE bestaetigt = 1 ORDER BY punkte DESC";
     $stmt = $pdo->query($sql);
     $highscores = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
