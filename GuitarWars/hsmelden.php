@@ -1,4 +1,11 @@
 <?php
+session_start();
+
+// Check if user is logged in
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit;
+}
 
 require_once("dbconnection.php");
 require_once("appKonstanten.php");
@@ -73,10 +80,58 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Highscore melden</title>
+    <title>Guitar Wars - Highscores</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <style>
+        .navbar-nav {
+            margin-left: auto;
+        }
+    </style>
 </head>
 <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="index.php">
+                <i class="bi bi-guitar"></i> Guitar Wars
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.php">
+                            <i class="bi bi-trophy"></i> Highscores
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="hsmelden.php">
+                            <i class="bi bi-plus-circle"></i> Score melden
+                        </a>
+                    </li>
+                    <?php if (isset($_SESSION['is_admin']) && $_SESSION['is_admin']): ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="admin.php">
+                                <i class="bi bi-shield-lock"></i> Administration
+                            </a>
+                        </li>
+                    <?php endif; ?>
+                    <li class="nav-item">
+                        <span class="nav-link">
+                            <i class="bi bi-person-circle"></i> Angemeldet als <?php echo htmlspecialchars($_SESSION['username']); ?>
+                        </span>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="logout.php">
+                            <i class="bi bi-box-arrow-right"></i> Logout
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    
     <div class="container mt-5">
         <div class="row justify-content-center">
             <div class="col-md-6">
