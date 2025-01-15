@@ -10,13 +10,11 @@ if (!isset($_SESSION['user_id'])) {
 require_once("dbconnection.php");
 require_once("appKonstanten.php");
 
-$benutzername = "";
 $punkte = "";
 $meldung = "";
 $screenshot_name = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $benutzername = trim($_POST["benutzername"]);
     $punkte = trim($_POST["punkte"]);
 
     $screenshot_name = trim($_FILES["screenshot"]["name"]);
@@ -37,23 +35,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
         
         if(move_uploaded_file($screenshot_tmp_name, $ziel)){
-            if (empty($benutzername) || empty($punkte)) {
+            if (empty($punkte)) {
                 $meldung = "Bitte füllen Sie alle Felder aus.";
             } elseif (!is_numeric($punkte)) {
                 $meldung = "Die Punktezahl muss eine Zahl sein."; 
-            } elseif (strlen($benutzername) > 30) {
-                $meldung = "Der Benutzername darf maximal 30 Zeichen lang sein.";
             } elseif ($punkte <= 0 || $punkte > 999999) {
                 $meldung = "Bitte geben Sie eine gültige Punktzahl ein (1-999999).";
             } else {
                 try {
-                   
-                    $benutzername = trim(htmlspecialchars($benutzername));
-                    $punkte = trim($punkte);
                     $sql = "INSERT INTO highscores (benutzername, punkte, screenshot) VALUES (:benutzername, :punkte, :screenshot)";
                     $stmt = $pdo->prepare($sql);
                     $stmt->execute([
-                        ':benutzername' => $benutzername,
+                        ':benutzername' => $_SESSION['username'],
                         ':punkte' => $punkte,
                         ':screenshot' => $screenshot_name,
                     ]);
@@ -72,7 +65,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $meldung = "Ungültiger Dateityp oder Dateigröße. Erlaubt sind JPEG, PNG oder GIF bis 4 Megabyte.";
     }
 }
-   
 ?>
 
 <!DOCTYPE html>
@@ -146,11 +138,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             </div>
                         <?php endif; ?>
                         
-                        <form method="post" action="<?php echo htmlspecialchars($_SERVER['SCRIPT_NAME']); ?>" class="needs-validation" enctype="multipart/form-data" novalidate>
+                        <form method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" class="needs-validation" enctype="multipart/form-data" novalidate>
                             <div class="mb-3">
                                 <label for="benutzername" class="form-label">Name:</label>
                                 <input type="text" class="form-control" id="benutzername" name="benutzername" 
-                                    value="<?php echo htmlspecialchars($benutzername); ?>" required>
+                                    value="<?php echo htmlspecialchars($_SESSION['username']); ?>" readonly disabled>
                             </div>
                             
                             <div class="mb-3">
