@@ -28,7 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $error = "Dieser Benutzername ist bereits vergeben.";
             } else {
                 // Insert new user
-                $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+                $hashed_password = password_hash($password, PASSWORD_BCRYPT);
                 $sql = "INSERT INTO users (username, password, is_admin) VALUES (:username, :password, 0)";
                 $stmt = $pdo->prepare($sql);
                 $stmt->execute([
