@@ -2,12 +2,10 @@
 session_name("HONIG");
 session_start();
 
-// Define price constants (same as in formular.php)
 define('PREIS_250G', 4.90);
 define('PREIS_500G', 8.90); 
 define('PREIS_1000G', 15.90);
 
-// Store form data in session
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $_SESSION['honigsorte'] = $_POST['honigsorte'];
     $_SESSION['menge'] = $_POST['menge'];
@@ -32,7 +30,6 @@ switch ($_SESSION['glasgroesse']) {
     $_SESSION['gesamtpreis'] = $preis_pro_glas * $_SESSION['menge'];
 }
 
-// If no session data, redirect back to form
 if (!isset($_SESSION['honigsorte'])) {
     header("Location: formular.php");
     exit;
