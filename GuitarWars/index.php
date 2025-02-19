@@ -81,7 +81,13 @@ try {
             </div>
         </div>
     </nav>
-
+<?php 
+if (isset( $_SESSION ['username'])){
+    echo '<h1>Willkommen, ' . $_SESSION['username'] . '!</h1>';
+}else {
+    echo '<h1>Willkommen!</h1>';
+}
+?>
     <div class="container mt-5">
         <h2 class="mb-4">Highscores</h2>
         <div class="table-responsive">
