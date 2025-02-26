@@ -2,17 +2,12 @@
 
 require_once("Auto.class.php");
 
-$auto = new Auto();
-
-for($i = 0; $i < 5; $i++) {
-    $auto->beschleunigen();
-}
+$auto = new Auto(0);
+$auto->setGeschwindigkeit(50); 
 
 echo "Die aktuelle Geschwindigkeit ist: " . $auto->getGeschwindigkeit() . " km/h.<br><br>";
 
-for($i = 0; $i < 3; $i++) {
-    $auto->bremsen();
-}
+$auto->setGeschwindigkeit(20);
 
 echo "Die aktuelle Geschwindigkeit ist: " . $auto->getGeschwindigkeit() . " km/h.<br>";
 

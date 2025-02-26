@@ -17,11 +17,11 @@ class Auto{
     }
 
     public function beschleunigen(){
-        $this->geschwindigkeit+= 10;
+        $this->geschwindigkeit +=10;
     }
 
     public function bremsen(){
-        $this->geschwindigkeit = max(0, $this->geschwindigkeit - 10);
+        $this->geschwindigkeit  = max(0, $this->geschwindigkeit - 10);
     }
 
 }
