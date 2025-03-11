@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Watten-Tracker</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <style>
+        body {
+            background-color: white;
+            color: black;
+        }
+        .hero-section {
+            background-color: #ffffff;
+            border-bottom: 1px solid #000;
+            padding: 4rem 0;
+            text-align: center;
+        }
+        .navbar {
+            border-bottom: 1px solid #000;
+            background-color: white !important;
+        }
+        .nav-link {
+            color: black !important;
+        }
+        .nav-link:hover {
+            text-decoration: underline;
+        }
+        .btn-new-game {
+            font-size: 1.25rem;
+            padding: 0.75rem 2rem;
+            margin-top: 2rem;
+            background-color: black;
+            border: 2px solid black;
+            color: white;
+        }
+        .btn-new-game:hover {
+            background-color: white;
+            color: black;
+            border: 2px solid black;
+        }
+        .card {
+            border: 1px solid black;
+            border-radius: 0;
+            margin-bottom: 1rem;
+            height: 100%;
+        }
+        .card-body {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        .stats-container {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            height: 100%;
+        }
+        .win-rate-chart {
+            flex: 0 0 auto;
+        }
+        .stats-details {
+            flex: 1;
+        }
+        .game-entry, .player-entry {
+            min-height: 60px;
+        }
+        .card-title {
+            border-bottom: 1px solid black;
+            padding-bottom: 0.5rem;
+        }
+        footer {
+            border-top: 1px solid #000;
+            background-color: white !important;
+        }
+        .navbar-toggler {
+            border-color: black;
+        }
+        .navbar-toggler-icon {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%280, 0, 0, 1%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+            <a class="navbar-brand" href="#">Watten</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#highscores">Highscores</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#rules">Spielregeln</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#login">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#register">Registrieren</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <h1 class="display-4 mb-4">Watten-Tracker</h1>
+            <button class="btn btn-primary btn-new-game">Neues Spiel</button>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <div class="container my-5">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Letzte Spiele</h5>
+                        <div class="game-entry border-bottom pb-2 mb-2">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <strong>Marco vs. Aaron</strong>
+                                <span class="text-end">07.03.2025</span>
+                            </div>
+                            <small class="d-block">Gewinner: Marco</small>
+                        </div>
+                        <div class="game-entry border-bottom pb-2 mb-2">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <strong>Mölli vs. Marco</strong>
+                                <span class="text-end">06.03.2025</span>
+                            </div>
+                            <small class="d-block">Gewinner: Mölli</small>
+                        </div>
+                        <div class="game-entry pb-2">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <strong>Aaron vs. Mölli</strong>
+                                <span class="text-end">06.03.2025</span>
+                            </div>
+                            <small class="d-block">Gewinner: Aaron</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Statistiken</h5>
+                        <div class="stats-container">
+                            <div class="win-rate-chart">
+                                <svg width="150" height="150" viewBox="0 0 150 150">
+                                    <!-- Background circle -->
+                                    <circle cx="75" cy="75" r="60" fill="none" stroke="#e9ecef" stroke-width="15"/>
+                                    <!-- Win rate circle (65% win rate) -->
+                                    <circle cx="75" cy="75" r="60" fill="none" stroke="black" stroke-width="15"
+                                            stroke-dasharray="377 377" stroke-dashoffset="132"
+                                            transform="rotate(-90 75 75)"/>
+                                    <text x="75" y="75" text-anchor="middle" dominant-baseline="middle"
+                                          font-size="20">65%</text>
+                                    <text x="75" y="95" text-anchor="middle" dominant-baseline="middle"
+                                          font-size="12">Siegesrate</text>
+                                </svg>
+                            </div>
+                            <div class="stats-details">
+                                <div class="d-flex justify-content-between mb-3">
+                                    <span>Siege:</span>
+                                    <strong>15</strong>
+                                </div>
+                                <div class="d-flex justify-content-between mb-3">
+                                    <span>Niederlagen:</span>
+                                    <strong>8</strong>
+                                </div>
+                                <div class="d-flex justify-content-between mb-3">
+                                    <span>Gespielte Zeit:</span>
+                                    <strong>12.5h</strong>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <span>Gesamte Spiele:</span>
+                                    <strong>23</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Top Spieler</h5>
+                        <div class="player-entry border-bottom pb-2 mb-2">
+                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                <strong>Marco</strong>
+                                <span>8 Siege</span>
+                            </div>
+                            <button class="btn btn-sm btn-outline-dark">Profil ansehen</button>
+                        </div>
+                        <div class="player-entry border-bottom pb-2 mb-2">
+                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                <strong>Aaron</strong>
+                                <span>6 Siege</span>
+                            </div>
+                            <button class="btn btn-sm btn-outline-dark">Profil ansehen</button>
+                        </div>
+                        <div class="player-entry pb-2">
+                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                <strong>Mölli</strong>
+                                <span>5 Siege</span>
+                            </div>
+                            <button class="btn btn-sm btn-outline-dark">Profil ansehen</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-light py-4 mt-5">
+        <div class="container text-center">
+            <p class="mb-0"> 2025 Watten-Tracker. Alle Rechte vorbehalten.</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
