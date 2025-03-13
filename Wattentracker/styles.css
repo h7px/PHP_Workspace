@@ -1,3 +1,9 @@
+/* Overall body styling */
+html, body {
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+}
+
 /* Main styling */
 body {
     background-color: white;
@@ -7,24 +13,34 @@ body {
     min-height: 100vh;
 }
 
-/* Header Section */
+/* Header Section - Updated with subtle separator line */
 header {
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    position: sticky;
+    position: absolute;
     top: 0;
+    left: 0;
+    right: 0;
     z-index: 1000;
-    background-color: white;
+    background-color: transparent;
 }
 
 .navbar {
-    border-bottom: 1px solid #000;
-    background-color: white !important;
-    padding: 0.75rem 1rem;
+    background-color: transparent !important;
+    padding: 1.75rem 1rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1); /* Subtle separator line */
+    transition: all 0.3s ease;
 }
 
 .navbar-brand {
     font-weight: bold;
+    font-size: 1.8rem;
+    display: flex;
+    align-items: center;
+    color: #000;
+}
+
+.playing-card-icon {
     font-size: 1.5rem;
+    color: #000;
 }
 
 .nav-link {
@@ -39,34 +55,98 @@ header {
     color: #555 !important;
 }
 
-/* Hero Section */
+/* Hero Section - Adjusted to account for absolute header */
 .hero-section {
+    min-height: 100vh;
+    padding: 6rem 0 3rem 0; /* Increased top padding to account for header */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     background-color: #ffffff;
     border-bottom: 1px solid #000;
-    padding: 4rem 0;
     text-align: center;
+    position: relative; /* For positioning the stats button */
 }
 
-.btn-new-game {
-    font-size: 1.25rem;
-    padding: 0.75rem 2rem;
+/* Larger buttons with consistent size */
+.btn-my-games {
+    font-size: 1.5rem;
+    padding: 0.85rem 2rem;
     margin-top: 2rem;
-    background-color: black;
-    border: 2px solid black;
-    color: white;
     transition: all 0.3s ease;
 }
 
-.btn-new-game:hover {
+/* Make buttons the same size */
+.btn-equal-size {
+    min-width: 200px;
+    padding: 12px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 60px;
+}
+
+/* Scroll indicator at bottom of hero section */
+.scroll-indicator {
+    position: absolute;
+    bottom: 30px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    color: #6c757d;
+    cursor: pointer;
+}
+
+/* Statistics Scroll Button - Styled like other buttons */
+.stats-scroll-button-container {
+    position: absolute;
+    bottom: 85px;
+    left: 0;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+.stats-button-label {
+    margin-bottom: 12px;
+    font-weight: 500;
+    color: #333;
+    font-size: 1.4rem;
+    opacity: 0.9;
+}
+
+.btn-circle {
+    width: 65px;
+    height: 65px;
+    border-radius: 50%;
     background-color: white;
     color: black;
     border: 2px solid black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: none;
+}
+
+.btn-circle:hover {
+    background-color: black;
+    color: white;
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
+.btn-circle i {
+    font-size: 1.6rem;
+}
+
 /* Cards Section */
 .cards-section {
+    min-height: 100vh;
     padding: 3rem 0;
     background-color: #f8f9fa;
 }
@@ -108,6 +188,32 @@ header {
     flex: 0 0 auto;
 }
 
+/* Animation for the progress circle */
+.circle-animation {
+    stroke-dasharray: 377;
+    stroke-dashoffset: 377;
+    transition: stroke-dashoffset 1.5s ease-in-out;
+}
+
+@keyframes progress-animation {
+    to {
+        stroke-dashoffset: 132; /* This represents 65% completion (377 * 0.35 = ~132) */
+    }
+}
+
+.animate-progress {
+    stroke-dashoffset: 132; /* 65% of 377 = ~132 */
+}
+
+.percentage-counter {
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+
+.percentage-counter.show {
+    opacity: 1;
+}
+
 .stats-details {
     flex: 1;
 }
@@ -129,9 +235,10 @@ footer {
     padding: 1.5rem 0;
 }
 
-/* Mobile Navigation */
+/* Mobile Navigation - Updated for transparent header */
 .navbar-toggler {
     border-color: black;
+    background-color: rgba(255, 255, 255, 0.5);
 }
 
 .navbar-toggler-icon {
@@ -151,6 +258,10 @@ footer {
     
     .cards-section {
         padding: 2rem 0;
+    }
+
+    .navbar {
+        padding: 1.5rem 1rem;
     }
 }
 
@@ -175,7 +286,37 @@ footer {
     }
     
     .navbar-brand {
+        font-size: 1.5rem;
+    }
+    
+    .hero-section h1.display-4 {
+        font-size: 2.8rem;
+    }
+    
+    .btn-new-game, .btn-my-games {
         font-size: 1.3rem;
+    }
+    
+    .btn-equal-size {
+        min-width: 180px;
+        height: 55px;
+    }
+    
+    .stats-button-label {
+        font-size: 1.2rem;
+    }
+    
+    .btn-circle {
+        width: 50px; /* Reduced from 60px */
+        height: 50px; /* Reduced from 60px */
+    }
+    
+    .btn-circle i {
+        font-size: 1.3rem; /* Reduced from 1.5rem */
+    }
+
+    .navbar {
+        padding: 1.25rem 1rem;
     }
 }
 
@@ -204,5 +345,74 @@ footer {
     footer {
         padding: 1rem 0;
         font-size: 0.9rem;
+    }
+    
+    .hero-section h1.display-4 {
+        font-size: 2.4rem;
+    }
+    
+    .btn-equal-size {
+        min-width: 160px;
+        height: 50px;
+    }
+}
+
+/* Statistics Section */
+.statistics-section {
+    min-height: 100vh;
+    padding: 4rem 0;
+    background-color: #f8f9fa;
+    border-top: 1px solid #dee2e6;
+    border-bottom: 1px solid #dee2e6;
+}
+
+/* Button styles */
+.btn-my-games {
+    font-size: 1.25rem;
+    padding: 0.75rem 2rem;
+    transition: all 0.3s ease;
+}
+
+.btn-my-games:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+/* Circle Animation */
+.circle-animation {
+    stroke-dashoffset: 377;
+    transition: stroke-dashoffset 1.5s ease-in-out;
+}
+
+.animate-progress {
+    stroke-dashoffset: 132; /* 65% of 377 = ~132 */
+}
+
+.percentage-counter {
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+
+.percentage-counter.show {
+    opacity: 1;
+}
+
+@keyframes progress-animation {
+    to {
+        stroke-dashoffset: 132; /* This represents 65% completion (377 * 0.35 = ~132) */
+    }
+}
+
+/* Remove float animation keyframes that were only used for the button */
+/* Keep the pulse animation for click feedback */
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.2);
+    }
+    100% {
+        transform: scale(1);
     }
 }
