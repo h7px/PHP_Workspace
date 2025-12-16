@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FastRent</title>
+</head>
+<body>
+    <h1>Willkommen beim Leihwagen-Reservierungsservice!</h1>
+    <form action="reservierung.php" method="POST">
+
+     <label for="fahrzeug">Fahrzeug:</label><br>
+        <select id="fahrzeug" name="fahrzeug" required>
+            <option disabled selected>auswählen</option>
+            <option value="Audi A4">Audi A4</option>
+            <option value="VW Golf">VW Golf</option>
+            <option value="Tesla Model 3">Tesla Model 3</option>
+        </select><br><br>
+
+        <label for="betreuer">Kundenbetreuer:</label><br>
+        <select id="betreuer" name="betreuer" required>
+            <option value="" disabled selected>auswählen</option>
+            <option value="Claudia Fröhlich">Claudia Fröhlich</option>
+            <option value="Hans Lustig">Hans Lustig</option>
+            <option value="Erika Seltsam">Erika Seltsam</option>
+        </select><br><br>
+
+        <label for="kunde">Kunde/Kundin:</label><br>
+        <input type="text" id="kunde" name="kunde" required><br><br>
+
+        <label for="entlehndatum">Entlehndatum: (von)</label><br>
+        <input type="date" id="entlehndatum" name="entlehndatum" required><br><br>
+
+        <label for="tage">Anzahl Tage</label><br>
+        <input type="number" id="tage" name="tage" required><br><br>
+
+        <input type="checkbox" id="volljahrig" name="volljahrig" required>
+        <label for="volljahrig">Sind sie volljährig?</label><br><br>
+
+        <input type="submit" value="Senden">
+</body>
+</html>
